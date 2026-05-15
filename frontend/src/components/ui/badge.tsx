@@ -14,6 +14,7 @@ const badgeVariants = cva(
         warm: "bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/30 dark:text-orange-400 dark:border-orange-800",
         cold: "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800",
         secondary: "bg-bg text-secondary border-border hover:bg-bg/80",
+        outline: "border border-border bg-transparent text-foreground",
       },
     },
     defaultVariants: {
