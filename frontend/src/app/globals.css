@@ -1,0 +1,59 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* --- Strict User Design System --- */
+  --color-bg: var(--color-bg);
+  --color-card: var(--color-card);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-border: var(--color-border);
+
+  /* --- Mapped Shadcn Helpers --- */
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-primary);
+  --color-popover: var(--color-card);
+  --color-popover-foreground: var(--color-primary);
+  --color-muted: #F3F4F6;
+  --color-muted-foreground: var(--color-secondary);
+  --color-destructive: #EF4444;
+  --color-destructive-foreground: #FFFFFF;
+  --color-ring: var(--color-accent);
+  
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+:root {
+  /* Strict Colors */
+  --color-bg: #F8F7F4;
+  --color-card: #FFFFFF;
+  --color-primary: #111111;
+  --color-secondary: #666666;
+  --color-accent: #E84D31;
+  --color-border: #E5E7EB;
+
+  --radius: 0.75rem; /* 12px rounded corners */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-bg text-primary;
+  }
+  html {
+    @apply font-sans;
+  }
+}
