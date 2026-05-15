@@ -11,8 +11,19 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "AI Growth OS",
-  description: "Identify high-intent leads instantly and scale execution",
+  title: {
+    default: "AI Growth OS",
+    template: "%s | AI Growth OS",
+  },
+  description:
+    "AI-powered lead discovery, scoring, and outreach platform. Turn cold leads into revenue — automatically.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+    shortcut: "/logo.png",
+  },
+  applicationName: "AI Growth OS",
+  keywords: ["lead generation", "AI sales", "outreach automation", "lead scoring"],
 };
 
 export default function RootLayout({

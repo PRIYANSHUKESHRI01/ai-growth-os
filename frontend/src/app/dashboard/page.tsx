@@ -28,7 +28,7 @@ function PipelineProgressBar({ totalLeads, hotLeads, campaignsCount }: {
   campaignsCount: number
 }) {
   const discoverDone = totalLeads > 0
-  const scoreDone    = hotLeads > 0
+  const scoreDone = hotLeads > 0
   const outreachDone = campaignsCount > 0
 
   // Determine status text for each step
@@ -39,11 +39,11 @@ function PipelineProgressBar({ totalLeads, hotLeads, campaignsCount }: {
   }
 
   const discoverStatus = getStatus(discoverDone, true)
-  const scoreStatus    = getStatus(scoreDone, discoverDone)
+  const scoreStatus = getStatus(scoreDone, discoverDone)
   const outreachStatus = getStatus(outreachDone, scoreDone)
 
   const STATUS_LABEL: Record<string, string> = {
-    "completed":   "Completed",
+    "completed": "Completed",
     "in-progress": "In Progress",
     "not-started": "Not Started",
   }
@@ -76,35 +76,37 @@ function PipelineProgressBar({ totalLeads, hotLeads, campaignsCount }: {
   ]
 
   return (
-    <div className="w-full rounded-2xl border border-border bg-card p-6">
-      <div className="flex items-center justify-between mb-5">
+    <div className="w-full rounded-2xl border border-border bg-card p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-5">
         <p className="text-[10px] font-bold uppercase tracking-widest text-secondary">Pipeline Status</p>
         <p className="text-[11px] text-secondary">Follow the steps to activate your growth engine.</p>
       </div>
-      <div className="flex items-start gap-0">
+      {/* Mobile: vertical stack. sm+: horizontal row */}
+      <div className="flex flex-col sm:flex-row sm:items-start gap-0">
         {steps.map((step, i) => {
-          const isCompleted  = step.status === "completed"
+          const isCompleted = step.status === "completed"
           const isInProgress = step.status === "in-progress"
           const isNotStarted = step.status === "not-started"
 
           return (
-            <div key={step.id} className="flex items-start flex-1">
-              <Link href={step.href} className="flex-1 group flex flex-col items-center text-center gap-2">
+            <div key={step.id} className="flex sm:flex-col sm:items-start sm:flex-1">
+              {/* Mobile: horizontal row. sm+: stacked column */}
+              <Link href={step.href} className="flex-1 group flex sm:flex-col items-center sm:text-center gap-3 sm:gap-2 py-2 sm:py-0">
 
                 {/* Circle / checkmark */}
                 <div className={`
-                  size-10 rounded-full flex items-center justify-center border-2 transition-all duration-200 group-hover:scale-110
-                  ${isCompleted  ? "bg-emerald-500/10 border-emerald-500 text-emerald-500 shadow-[0_0_16px_-4px_rgba(16,185,129,0.5)]" : ""}
+                  size-9 sm:size-10 rounded-full flex items-center justify-center border-2 transition-all duration-200 group-hover:scale-110 shrink-0
+                  ${isCompleted ? "bg-emerald-500/10 border-emerald-500 text-emerald-500 shadow-[0_0_16px_-4px_rgba(16,185,129,0.5)]" : ""}
                   ${isInProgress ? "bg-accent/10 border-accent text-accent shadow-[0_0_16px_-4px_hsl(var(--accent)/0.4)] animate-pulse" : ""}
                   ${isNotStarted ? "bg-bg border-border text-secondary/40" : ""}
                 `}>
-                  {isCompleted  && <CheckCircle2 className="size-5" />}
-                  {isInProgress && <Clock className="size-5" />}
-                  {isNotStarted && <Circle className="size-4" />}
+                  {isCompleted && <CheckCircle2 className="size-4 sm:size-5" />}
+                  {isInProgress && <Clock className="size-4 sm:size-5" />}
+                  {isNotStarted && <Circle className="size-3.5 sm:size-4" />}
                 </div>
 
                 {/* Text */}
-                <div className="space-y-0.5">
+                <div className="space-y-0.5 text-left sm:text-center">
                   <p className={`text-xs font-bold leading-tight transition-colors ${isCompleted ? "text-emerald-500" : isInProgress ? "text-primary" : "text-secondary/50"}`}>
                     {step.label}
                   </p>
@@ -118,8 +120,8 @@ function PipelineProgressBar({ totalLeads, hotLeads, campaignsCount }: {
               </Link>
 
               {i < steps.length - 1 && (
-                <div className="pt-4 px-2 shrink-0">
-                  <ArrowRight className={`size-4 transition-colors ${steps[i + 1].status !== "not-started" ? "text-accent" : "text-border"}`} />
+                <div className="pl-2 sm:pt-4 sm:px-2 shrink-0 flex items-center sm:self-start">
+                  <ArrowRight className={`size-4 rotate-90 sm:rotate-0 transition-colors ${steps[i + 1].status !== "not-started" ? "text-accent" : "text-border"}`} />
                 </div>
               )}
             </div>
@@ -137,35 +139,37 @@ function SmartCTA({ totalLeads, hotLeads }: { totalLeads: number; hotLeads: numb
   const router = useRouter()
 
   let label = "Run Discovery"
-  let href  = "/dashboard/discovery"
-  let icon  = <Zap className="size-4" />
-  let hint  = "No leads yet — start your pipeline by discovering new prospects."
+  let href = "/dashboard/discovery"
+  let icon = <Zap className="size-4" />
+  let hint = "No leads yet — start your pipeline by discovering new prospects."
 
   if (totalLeads > 0 && hotLeads === 0) {
     label = "Review Leads"
-    href  = "/dashboard/leads"
-    icon  = <BrainCircuit className="size-4" />
-    hint  = "Leads found — check your AI scoring results and identify high-intent prospects."
+    href = "/dashboard/leads"
+    icon = <BrainCircuit className="size-4" />
+    hint = "Leads found — check your AI scoring results and identify high-intent prospects."
   } else if (hotLeads > 0) {
     label = "Launch Campaign"
-    href  = "/dashboard/campaigns"
-    icon  = <Megaphone className="size-4" />
-    hint  = `${hotLeads} hot lead${hotLeads !== 1 ? "s" : ""} ready for outreach — launch an AI-powered sequence now.`
+    href = "/dashboard/campaigns"
+    icon = <Megaphone className="size-4" />
+    hint = `${hotLeads} hot lead${hotLeads !== 1 ? "s" : ""} ready for outreach — launch an AI-powered sequence now.`
   }
 
   return (
-    <div className="flex items-center gap-4 px-5 py-4 rounded-xl bg-accent/5 border border-accent/20 transition-all duration-200 hover:bg-accent/8 hover:border-accent/30">
-      <div className="size-9 rounded-full bg-accent/15 flex items-center justify-center text-accent shrink-0">
-        {icon}
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-xs font-semibold text-primary">Next recommended action</p>
-        <p className="text-xs text-secondary mt-0.5 leading-relaxed">{hint}</p>
+    <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 sm:px-5 py-4 rounded-xl bg-accent/5 border border-accent/20 transition-all duration-200 hover:bg-accent/8 hover:border-accent/30">
+      <div className="flex items-center gap-3 flex-1 min-w-0">
+        <div className="size-9 rounded-full bg-accent/15 flex items-center justify-center text-accent shrink-0">
+          {icon}
+        </div>
+        <div className="min-w-0">
+          <p className="text-xs font-semibold text-primary">Next recommended action</p>
+          <p className="text-xs text-secondary mt-0.5 leading-relaxed">{hint}</p>
+        </div>
       </div>
       <Button
         variant="primary"
         size="sm"
-        className="shrink-0 gap-2 transition-all duration-200 hover:scale-[1.03]"
+        className="shrink-0 gap-2 transition-all duration-200 hover:scale-[1.03] w-full sm:w-auto"
         onClick={() => router.push(href)}
       >
         {label}
@@ -303,17 +307,17 @@ export default function DashboardOverview() {
     })
   }
 
-  const totalLeads     = stats?.total_leads ?? 0
-  const hotLeads       = stats?.hot_leads_count ?? 0
+  const totalLeads = stats?.total_leads ?? 0
+  const hotLeads = stats?.hot_leads_count ?? 0
   const campaignsCount = stats?.campaigns_count ?? 0
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 sm:space-y-10">
 
       {/* ── HERO SECTION ── */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-primary">Your Growth Engine</h1>
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-primary">Your Growth Engine</h1>
           <p className="text-sm text-secondary mt-2 max-w-lg leading-relaxed">
             Turn cold leads into revenue with AI-powered discovery, scoring, and outreach.
           </p>
@@ -356,7 +360,7 @@ export default function DashboardOverview() {
       )}
 
       {/* ── STAT CARDS ── */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Total Leads"
           value={stats?.total_leads}
@@ -414,7 +418,7 @@ export default function DashboardOverview() {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               { label: "Total Discovered", value: stats?.total_leads ?? 0 },
               { label: "High Intent (Hot)", value: stats?.hot_leads_count ?? 0 },
@@ -471,6 +475,7 @@ export default function DashboardOverview() {
                 <Skeleton className="h-4 w-full" />
               </div>
             ) : (
+              <div className="overflow-x-auto">
               <Table>
                 <TableHeader className="bg-bg/50">
                   <TableRow className="hover:bg-transparent border-border">
@@ -540,6 +545,7 @@ export default function DashboardOverview() {
                   )}
                 </TableBody>
               </Table>
+              </div>
             )}
           </CardContent>
         </Card>

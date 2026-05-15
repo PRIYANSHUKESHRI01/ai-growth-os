@@ -51,7 +51,7 @@ function CreateCampaignModal({ open, onClose }: { open: boolean; onClose: () => 
 
   // Targeting Mode
   const [targetingMode, setTargetingMode] = useState<"score" | "date" | "specific">("score")
-  
+
   // Score Mode State
   const [minScorePct, setMinScorePct] = useState(0)
 
@@ -64,7 +64,7 @@ function CreateCampaignModal({ open, onClose }: { open: boolean; onClose: () => 
   const leads = leadsData?.leads || []
 
   const toggleLead = (id: string) => {
-    setSelectedLeadIds(prev => 
+    setSelectedLeadIds(prev =>
       prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
     )
   }
@@ -94,10 +94,10 @@ function CreateCampaignModal({ open, onClose }: { open: boolean; onClose: () => 
 
   const scoreLabel =
     minScorePct >= 75 ? "🔥 Very selective — only top-tier leads" :
-    minScorePct >= 50 ? "🌡️ Selective — warm + hot leads" :
-    minScorePct >= 25 ? "📊 Moderate — most scored leads" :
-    minScorePct >= 10 ? "🌐 Broad — all leads with any score" :
-                        "🌐 All scored leads"
+      minScorePct >= 50 ? "🌡️ Selective — warm + hot leads" :
+        minScorePct >= 25 ? "📊 Moderate — most scored leads" :
+          minScorePct >= 10 ? "🌐 Broad — all leads with any score" :
+            "🌐 All scored leads"
 
   // Warn if threshold is likely too high (common mistake)
   const highThresholdWarning = minScorePct > 50
@@ -130,11 +130,10 @@ function CreateCampaignModal({ open, onClose }: { open: boolean; onClose: () => 
               <button
                 type="button"
                 onClick={() => setTargetingMode("score")}
-                className={`flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium rounded-lg border transition-all ${
-                  targetingMode === "score"
+                className={`flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium rounded-lg border transition-all ${targetingMode === "score"
                     ? "bg-accent/10 border-accent/30 text-accent"
                     : "bg-card border-border/60 text-secondary hover:bg-muted"
-                }`}
+                  }`}
               >
                 <Target className="size-3.5" />
                 By Score
@@ -142,11 +141,10 @@ function CreateCampaignModal({ open, onClose }: { open: boolean; onClose: () => 
               <button
                 type="button"
                 onClick={() => setTargetingMode("date")}
-                className={`flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium rounded-lg border transition-all ${
-                  targetingMode === "date"
+                className={`flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium rounded-lg border transition-all ${targetingMode === "date"
                     ? "bg-accent/10 border-accent/30 text-accent"
                     : "bg-card border-border/60 text-secondary hover:bg-muted"
-                }`}
+                  }`}
               >
                 <Calendar className="size-3.5" />
                 By Date
@@ -154,11 +152,10 @@ function CreateCampaignModal({ open, onClose }: { open: boolean; onClose: () => 
               <button
                 type="button"
                 onClick={() => setTargetingMode("specific")}
-                className={`flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium rounded-lg border transition-all ${
-                  targetingMode === "specific"
+                className={`flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium rounded-lg border transition-all ${targetingMode === "specific"
                     ? "bg-accent/10 border-accent/30 text-accent"
                     : "bg-card border-border/60 text-secondary hover:bg-muted"
-                }`}
+                  }`}
               >
                 <ListFilter className="size-3.5" />
                 Specific
@@ -233,14 +230,13 @@ function CreateCampaignModal({ open, onClose }: { open: boolean; onClose: () => 
               <Label>Filter Scored Leads By Date Added</Label>
               <div className="grid grid-cols-1 gap-2">
                 {[{ id: "all", label: "All Time (All Scored Leads)" },
-                  { id: "week", label: "Past 7 Days" },
-                  { id: "today", label: "Added Today" }
+                { id: "week", label: "Past 7 Days" },
+                { id: "today", label: "Added Today" }
                 ].map(opt => (
                   <label
                     key={opt.id}
-                    className={`flex items-center gap-3 p-3 border rounded-lg cursor-pointer transition-all ${
-                      dateFilter === opt.id ? "bg-accent/5 border-accent/30" : "bg-card border-border/60 hover:bg-muted"
-                    }`}
+                    className={`flex items-center gap-3 p-3 border rounded-lg cursor-pointer transition-all ${dateFilter === opt.id ? "bg-accent/5 border-accent/30" : "bg-card border-border/60 hover:bg-muted"
+                      }`}
                   >
                     <input
                       type="radio"
@@ -273,9 +269,8 @@ function CreateCampaignModal({ open, onClose }: { open: boolean; onClose: () => 
                   leads.map(lead => (
                     <label
                       key={lead.id}
-                      className={`flex items-center gap-3 p-2 rounded-md cursor-pointer transition-all ${
-                        selectedLeadIds.includes(lead.id) ? "bg-accent/5" : "hover:bg-muted"
-                      }`}
+                      className={`flex items-center gap-3 p-2 rounded-md cursor-pointer transition-all ${selectedLeadIds.includes(lead.id) ? "bg-accent/5" : "hover:bg-muted"
+                        }`}
                     >
                       <input
                         type="checkbox"
@@ -479,14 +474,14 @@ export default function CampaignsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Outreach Engine</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Outreach Engine</h1>
           <p className="text-sm text-muted-foreground mt-1">
             Step 3 of your pipeline — launch AI-powered outreach sequences. {data?.total ? `${data.total} total` : ""}
           </p>
         </div>
-        <Button onClick={() => setShowCreate(true)}>
+        <Button onClick={() => setShowCreate(true)} className="self-start sm:self-auto">
           <Plus className="mr-2 size-4" /> New Campaign
         </Button>
       </div>

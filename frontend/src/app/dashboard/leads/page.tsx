@@ -29,7 +29,7 @@ function scoreColor(score: number) {
 
 function tagVariant(tag?: string): "hot" | "warm" | "cold" | "secondary" {
   const t = (tag ?? "").toLowerCase()
-  if (t.includes("hot"))  return "hot"
+  if (t.includes("hot")) return "hot"
   if (t.includes("warm")) return "warm"
   if (t.includes("cold")) return "cold"
   return "secondary"
@@ -120,13 +120,13 @@ export default function LeadsPage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const { data, isLoading, refetch } = useLeads(page)
-  const uploadMutation   = useUploadLeads()
+  const uploadMutation = useUploadLeads()
   const scoreAllMutation = useScoreAllLeads()
 
-  const leads         = data?.leads ?? []
+  const leads = data?.leads ?? []
   const unscoredCount = leads.filter(l => !l.score).length
-  const scoredCount   = leads.filter(l => !!l.score).length
-  const isScoring     = scoreAllMutation.isPending
+  const scoredCount = leads.filter(l => !!l.score).length
+  const isScoring = scoreAllMutation.isPending
 
   const handleScoreAll = () => {
     if (unscoredCount === 0) { toast.info("All leads are already scored."); return }
@@ -144,14 +144,14 @@ export default function LeadsPage() {
     <div className="space-y-6">
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-primary">Lead Scoring</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-primary">Lead Scoring</h1>
           <p className="text-sm text-secondary mt-1">
             AI-powered lead intelligence. Score, review, and manage your pipeline.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 flex-wrap">
           <Button variant="secondary" size="sm">
             <Download className="mr-2 size-4" /> Export
           </Button>
@@ -172,8 +172,8 @@ export default function LeadsPage() {
 
       {/* ── Stats + Score-All bar ───────────────────────────────────────────── */}
       {!isLoading && leads.length > 0 && (
-        <div className="flex items-center gap-4 p-4 bg-card border border-border rounded-xl">
-          <div className="flex items-center gap-3 flex-1">
+        <div className="flex flex-wrap items-center gap-3 p-4 bg-card border border-border rounded-xl">
+          <div className="flex flex-wrap items-center gap-3 flex-1">
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500/10 border border-green-500/20 rounded-lg">
               <CheckCircle2 className="size-3.5 text-green-400" />
               <span className="text-xs font-bold text-green-400">{scoredCount} scored</span>
@@ -191,7 +191,7 @@ export default function LeadsPage() {
             </span>
           </div>
           {unscoredCount > 0 && (
-            <Button variant="primary" size="sm" onClick={handleScoreAll} disabled={isScoring} className="shrink-0">
+            <Button variant="primary" size="sm" onClick={handleScoreAll} disabled={isScoring} className="shrink-0 w-full sm:w-auto">
               {isScoring
                 ? <Loader2 className="mr-2 size-4 animate-spin" />
                 : <Sparkles className="mr-2 size-4" />}
@@ -248,84 +248,86 @@ export default function LeadsPage() {
             </div>
           </div>
         ) : (
-          <Table>
-            <TableHeader className="bg-bg/50">
-              <TableRow className="hover:bg-transparent border-border">
-                <TableHead className="pl-6 w-[200px]">Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Company</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead className="text-center w-[80px]">Score</TableHead>
-                <TableHead className="text-center w-[110px]">Tag</TableHead>
-                {/* Actions column: Score (unscored) | ✓ (scored) + Delete */}
-                <TableHead className="pr-4 w-[130px]" />
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {leads.map((lead) => {
-                const isScored   = !!lead.score
-                const finalScore = lead.score?.final_score ?? null
-                const tag        = lead.score?.tag
-                const name = `${lead.first_name || ""} ${lead.last_name || ""}`.trim() || "Unknown"
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader className="bg-bg/50">
+                <TableRow className="hover:bg-transparent border-border">
+                  <TableHead className="pl-6 w-[160px]">Name</TableHead>
+                  <TableHead className="hidden md:table-cell">Email</TableHead>
+                  <TableHead className="hidden sm:table-cell">Company</TableHead>
+                  <TableHead className="hidden lg:table-cell">Title</TableHead>
+                  <TableHead className="text-center w-[80px]">Score</TableHead>
+                  <TableHead className="text-center w-[110px]">Tag</TableHead>
+                  {/* Actions column: Score (unscored) | ✓ (scored) + Delete */}
+                  <TableHead className="pr-4 w-[130px]" />
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {leads.map((lead) => {
+                  const isScored = !!lead.score
+                  const finalScore = lead.score?.final_score ?? null
+                  const tag = lead.score?.tag
+                  const name = `${lead.first_name || ""} ${lead.last_name || ""}`.trim() || "Unknown"
 
-                return (
-                  <TableRow
-                    key={lead.id}
-                    className="group cursor-pointer hover:bg-bg/60 transition-colors border-border"
-                    onClick={() => router.push(`/dashboard/leads/${lead.id}`)}
-                  >
-                    <TableCell className="pl-6 font-medium text-primary py-4">{name}</TableCell>
-                    <TableCell className="text-secondary text-sm font-mono">{lead.email}</TableCell>
-                    <TableCell className="text-secondary text-sm">{lead.company || "—"}</TableCell>
-                    <TableCell className="text-secondary text-sm">{(lead as any).title || "—"}</TableCell>
+                  return (
+                    <TableRow
+                      key={lead.id}
+                      className="group cursor-pointer hover:bg-bg/60 transition-colors border-border"
+                      onClick={() => router.push(`/dashboard/leads/${lead.id}`)}
+                    >
+                      <TableCell className="pl-6 font-medium text-primary py-4">{name}</TableCell>
+                      <TableCell className="text-secondary text-sm font-mono hidden md:table-cell">{lead.email}</TableCell>
+                      <TableCell className="text-secondary text-sm hidden sm:table-cell">{lead.company || "—"}</TableCell>
+                      <TableCell className="text-secondary text-sm hidden lg:table-cell">{(lead as any).title || "—"}</TableCell>
 
-                    {/* Score */}
-                    <TableCell className="text-center">
-                      {isScored && finalScore !== null ? (
-                        <span className={`font-bold text-sm tabular-nums ${scoreColor(finalScore)}`}>
-                          {Math.round(finalScore * 100)}
-                        </span>
-                      ) : (
-                        <span className="text-secondary/40 text-xs">—</span>
-                      )}
-                    </TableCell>
-
-                    {/* Tag */}
-                    <TableCell className="text-center">
-                      {isScored ? (
-                        <Badge variant={tagVariant(tag)}>{tag || "SCORED"}</Badge>
-                      ) : (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-border/60 text-secondary/60 border border-border">
-                          UNSCORED
-                        </span>
-                      )}
-                    </TableCell>
-
-                    {/* Actions */}
-                    <TableCell className="pr-4">
-                      <div
-                        className="flex items-center justify-end gap-1.5"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {/* Score button — only on unscored, hidden until row hover */}
-                        {!isScored && (
-                          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                            <ScoreButton leadId={lead.id} onDone={() => refetch()} />
-                          </div>
+                      {/* Score */}
+                      <TableCell className="text-center">
+                        {isScored && finalScore !== null ? (
+                          <span className={`font-bold text-sm tabular-nums ${scoreColor(finalScore)}`}>
+                            {Math.round(finalScore * 100)}
+                          </span>
+                        ) : (
+                          <span className="text-secondary/40 text-xs">—</span>
                         )}
-                        {/* Scored indicator — subtle on hover */}
-                        {isScored && (
-                          <CheckCircle2 className="size-4 text-green-500/40 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </TableCell>
+
+                      {/* Tag */}
+                      <TableCell className="text-center">
+                        {isScored ? (
+                          <Badge variant={tagVariant(tag)}>{tag || "SCORED"}</Badge>
+                        ) : (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-border/60 text-secondary/60 border border-border">
+                            UNSCORED
+                          </span>
                         )}
-                        {/* Delete — always in the row, visible on hover */}
-                        <DeleteButton leadId={lead.id} leadName={name} />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
+                      </TableCell>
+
+                      {/* Actions */}
+                      <TableCell className="pr-4">
+                        <div
+                          className="flex items-center justify-end gap-1.5"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {/* Score button — only on unscored, hidden until row hover */}
+                          {!isScored && (
+                            <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                              <ScoreButton leadId={lead.id} onDone={() => refetch()} />
+                            </div>
+                          )}
+                          {/* Scored indicator — subtle on hover */}
+                          {isScored && (
+                            <CheckCircle2 className="size-4 text-green-500/40 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          )}
+                          {/* Delete — always in the row, visible on hover */}
+                          <DeleteButton leadId={lead.id} leadName={name} />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </div>
         )}
       </div>
 

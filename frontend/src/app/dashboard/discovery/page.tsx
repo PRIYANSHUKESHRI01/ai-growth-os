@@ -35,9 +35,9 @@ function ConfBadge({ value }: { value?: number }) {
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, string> = {
     completed: "bg-green-500/15 text-green-400 border-green-500/30",
-    running:   "bg-accent/15 text-accent border-accent/30 animate-pulse",
-    pending:   "bg-yellow-500/15 text-yellow-400 border-yellow-500/30",
-    failed:    "bg-red-500/15 text-red-400 border-red-500/30",
+    running: "bg-accent/15 text-accent border-accent/30 animate-pulse",
+    pending: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30",
+    failed: "bg-red-500/15 text-red-400 border-red-500/30",
   }
   const cls = map[status] ?? "bg-border/50 text-secondary"
   return (
@@ -65,8 +65,8 @@ export default function DiscoveryPage() {
   const { data: jobsList, isLoading: jobsLoading, refetch: refetchJobs } = useDiscoveryJobs()
   const { data: credits, refetch: refetchCredits } = useDiscoveryCredits()
   const { data: enrichedData, isLoading: enrichedLoading, refetch: refetchEnriched } = useEnrichedLeads(enrichedPage)
-  const createJobMutation   = useCreateDiscoveryJob()
-  const runSyncMutation     = useRunDiscoveryJobSync()
+  const createJobMutation = useCreateDiscoveryJob()
+  const runSyncMutation = useRunDiscoveryJobSync()
   const downloadCsvMutation = useDownloadJobCsv()
   // Navigate to leads page after scoring — the discovery endpoint already scored the right leads
   const sendScoringMutation = useSendJobToScoring(() => router.push("/dashboard/leads"))
@@ -105,23 +105,23 @@ export default function DiscoveryPage() {
   }
 
   const completedJobs = jobsList?.jobs.filter((j) => j.status === "completed") ?? []
-  const activeJobs    = jobsList?.jobs.filter((j) => j.status === "running" || j.status === "pending") ?? []
+  const activeJobs = jobsList?.jobs.filter((j) => j.status === "running" || j.status === "pending") ?? []
 
   return (
     <div className="space-y-8">
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-primary">Lead Discovery</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-primary">Lead Discovery</h1>
           <p className="text-sm text-secondary mt-1">
             Define your ICP, discover leads, download CSV, and send to AI scoring — all in one click.
           </p>
         </div>
 
-        <div className="flex items-center gap-4 px-4 py-2 bg-card border border-border rounded-xl">
-          <div className="text-right">
+        <div className="flex items-center gap-4 px-4 py-2 bg-card border border-border rounded-xl self-start sm:self-auto">
+          <div>
             <p className="text-[10px] uppercase tracking-wider text-secondary font-bold">Available Credits</p>
-            <div className="flex items-center gap-2 mt-0.5">
+            <div className="flex items-center gap-2 mt-0.5 flex-wrap">
               <Badge variant="hot">{credits?.discovery_credits ?? 0} Discovery</Badge>
               <Badge variant="secondary">{credits?.enrichment_credits ?? 0} Enrichment</Badge>
             </div>
@@ -199,8 +199,8 @@ export default function DiscoveryPage() {
               {isRunning
                 ? "Running Pipeline..."
                 : credits && credits.discovery_credits < 1
-                ? "Insufficient Balance"
-                : "Initialize Discovery"}
+                  ? "Insufficient Balance"
+                  : "Initialize Discovery"}
             </Button>
           </CardContent>
         </Card>
@@ -211,12 +211,12 @@ export default function DiscoveryPage() {
           {/* Live results after discovery */}
           {liveLeads.length > 0 && activeJobId && (
             <Card className="border-accent/30 shadow-lg shadow-accent/5">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 space-y-0 pb-3">
                 <CardTitle className="flex items-center gap-2 text-accent">
                   <CheckCircle2 className="size-4" />
                   Discovery Complete — {liveLeads.length} Leads Found
                 </CardTitle>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <Button
                     size="sm"
                     variant="secondary"
@@ -248,7 +248,7 @@ export default function DiscoveryPage() {
                 </div>
               </CardHeader>
               <CardContent className="p-0 border-t border-border">
-                <div className="overflow-auto max-h-72">
+                <div className="overflow-x-auto max-h-72">
                   <Table>
                     <TableHeader className="bg-bg/50 sticky top-0">
                       <TableRow className="hover:bg-transparent border-border">
@@ -376,6 +376,7 @@ export default function DiscoveryPage() {
                   </p>
                 </div>
               ) : (
+                <div className="overflow-x-auto">
                 <Table>
                   <TableHeader className="bg-bg/50">
                     <TableRow className="hover:bg-transparent border-border">
@@ -435,6 +436,7 @@ export default function DiscoveryPage() {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               )}
             </CardContent>
           </Card>
@@ -480,7 +482,7 @@ export default function DiscoveryPage() {
               </div>
             ) : (
               <>
-                <div className="overflow-auto max-h-80">
+                <div className="overflow-x-auto max-h-80">
                   <Table>
                     <TableHeader className="bg-bg/50 sticky top-0">
                       <TableRow className="hover:bg-transparent border-border">

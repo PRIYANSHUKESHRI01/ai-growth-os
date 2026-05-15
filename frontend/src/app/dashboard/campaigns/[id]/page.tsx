@@ -24,29 +24,29 @@ import type { OutreachCampaignLead, CampaignStepStat } from "@/lib/api"
 const pct = (n: number) => `${(n * 100).toFixed(1)}%`
 
 const STATUS_STYLES: Record<string, string> = {
-  draft:     "bg-gray-100 text-gray-700 border-gray-200",
-  pending:   "bg-yellow-50 text-yellow-700 border-yellow-200",
-  running:   "bg-emerald-50 text-emerald-700 border-emerald-200",
-  paused:    "bg-orange-50 text-orange-700 border-orange-200",
+  draft: "bg-gray-100 text-gray-700 border-gray-200",
+  pending: "bg-yellow-50 text-yellow-700 border-yellow-200",
+  running: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  paused: "bg-orange-50 text-orange-700 border-orange-200",
   completed: "bg-blue-50 text-blue-700 border-blue-200",
-  failed:    "bg-red-50 text-red-700 border-red-200",
+  failed: "bg-red-50 text-red-700 border-red-200",
 }
 
 const LEAD_STATUS_ICON: Record<string, React.ReactNode> = {
-  pending:      <Clock className="size-3.5 text-yellow-500" />,
-  sent:         <Mail className="size-3.5 text-blue-500" />,
-  replied:      <CheckCircle2 className="size-3.5 text-emerald-500" />,
-  failed:       <XCircle className="size-3.5 text-red-500" />,
-  skipped:      <SkipForward className="size-3.5 text-gray-400" />,
+  pending: <Clock className="size-3.5 text-yellow-500" />,
+  sent: <Mail className="size-3.5 text-blue-500" />,
+  replied: <CheckCircle2 className="size-3.5 text-emerald-500" />,
+  failed: <XCircle className="size-3.5 text-red-500" />,
+  skipped: <SkipForward className="size-3.5 text-gray-400" />,
   unsubscribed: <XCircle className="size-3.5 text-gray-400" />,
 }
 
 const REPLY_BADGE: Record<string, { label: string; cls: string }> = {
-  interested:      { label: "✅ Interested",       cls: "bg-emerald-100 text-emerald-700" },
-  not_interested:  { label: "❌ Not Interested",   cls: "bg-red-100 text-red-700" },
-  meeting_request: { label: "📅 Meeting Request",  cls: "bg-violet-100 text-violet-700" },
-  objection:       { label: "🤔 Objection",        cls: "bg-orange-100 text-orange-700" },
-  unknown:         { label: "Unknown",             cls: "bg-gray-100 text-gray-500" },
+  interested: { label: "✅ Interested", cls: "bg-emerald-100 text-emerald-700" },
+  not_interested: { label: "❌ Not Interested", cls: "bg-red-100 text-red-700" },
+  meeting_request: { label: "📅 Meeting Request", cls: "bg-violet-100 text-violet-700" },
+  objection: { label: "🤔 Objection", cls: "bg-orange-100 text-orange-700" },
+  unknown: { label: "Unknown", cls: "bg-gray-100 text-gray-500" },
 }
 
 // ── Funnel Component ──────────────────────────────────────────────────────────
@@ -60,10 +60,10 @@ function CampaignFunnel({
   total_replied: number
 }) {
   const stages = [
-    { label: "Leads",   value: total_leads,   color: "bg-gray-200",          textColor: "text-gray-700" },
-    { label: "Sent",    value: total_sent,    color: "bg-blue-400",          textColor: "text-blue-700" },
-    { label: "Opened",  value: total_opened,  color: "bg-violet-400",        textColor: "text-violet-700" },
-    { label: "Replied", value: total_replied, color: "bg-accent",            textColor: "text-white" },
+    { label: "Leads", value: total_leads, color: "bg-gray-200", textColor: "text-gray-700" },
+    { label: "Sent", value: total_sent, color: "bg-blue-400", textColor: "text-blue-700" },
+    { label: "Opened", value: total_opened, color: "bg-violet-400", textColor: "text-violet-700" },
+    { label: "Replied", value: total_replied, color: "bg-accent", textColor: "text-white" },
   ]
   const max = total_leads || 1
 
@@ -119,7 +119,7 @@ function CampaignFunnel({
 function StepCard({ s }: { s: CampaignStepStat }) {
   const dayLabel = s.step_number === 1 ? "Day 0" : s.step_number === 2 ? "Day 2" : "Day 5"
   const replyPct = s.total_sent > 0 ? (s.reply_rate * 100) : 0
-  const openPct  = s.total_sent > 0 ? (s.open_rate  * 100) : 0
+  const openPct = s.total_sent > 0 ? (s.open_rate * 100) : 0
 
   return (
     <div className="rounded-xl border border-border/60 p-4 space-y-3 bg-card">
@@ -206,7 +206,7 @@ export default function CampaignDetailPage() {
   const { id } = useParams<{ id: string }>()
   const api = useApiClient()
   const queryClient = useQueryClient()
-  
+
   const [selectedEmail, setSelectedEmail] = React.useState<any>(null)
 
   const { data: detail, isLoading } = useQuery({
@@ -245,7 +245,7 @@ export default function CampaignDetailPage() {
       <div className="space-y-6">
         <Skeleton className="h-8 w-48" />
         <div className="grid grid-cols-4 gap-4">
-          {[1,2,3,4].map(i => <Skeleton key={i} className="h-24" />)}
+          {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24" />)}
         </div>
         <Skeleton className="h-64" />
         <Skeleton className="h-96" />
@@ -262,7 +262,7 @@ export default function CampaignDetailPage() {
     )
   }
 
-  const openRate  = detail.total_sent > 0 ? pct((detail as any).total_opened / detail.total_sent) : "—"
+  const openRate = detail.total_sent > 0 ? pct((detail as any).total_opened / detail.total_sent) : "—"
   const replyRate = detail.total_sent > 0 ? pct(detail.reply_rate) : "—"
 
   return (
@@ -303,11 +303,11 @@ export default function CampaignDetailPage() {
       {/* KPI Stats row — 5 cards */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
         {[
-          { label: "Total Leads",  value: detail.total_leads,   icon: <Users className="size-4 text-muted-foreground" /> },
-          { label: "Emails Sent",  value: detail.total_sent,    icon: <Mail className="size-4 text-blue-500" /> },
-          { label: "Opened",       value: (detail as any).total_opened ?? 0, icon: <MailOpen className="size-4 text-violet-500" /> },
-          { label: "Open Rate",    value: openRate,             icon: <MailOpen className="size-4 text-violet-400" /> },
-          { label: "Reply Rate",   value: replyRate,            icon: <CheckCircle2 className="size-4 text-emerald-500" /> },
+          { label: "Total Leads", value: detail.total_leads, icon: <Users className="size-4 text-muted-foreground" /> },
+          { label: "Emails Sent", value: detail.total_sent, icon: <Mail className="size-4 text-blue-500" /> },
+          { label: "Opened", value: (detail as any).total_opened ?? 0, icon: <MailOpen className="size-4 text-violet-500" /> },
+          { label: "Open Rate", value: openRate, icon: <MailOpen className="size-4 text-violet-400" /> },
+          { label: "Reply Rate", value: replyRate, icon: <CheckCircle2 className="size-4 text-emerald-500" /> },
         ].map(s => (
           <Card key={s.label}>
             <CardContent className="flex items-center gap-3 pt-5 pb-4">
@@ -385,7 +385,7 @@ export default function CampaignDetailPage() {
               This is the AI-generated email for {[selectedEmail?.first_name, selectedEmail?.last_name].filter(Boolean).join(" ") || "this lead"}.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="flex-1 overflow-y-auto pr-2 space-y-4 py-4 min-h-0">
             {selectedEmail && (
               <>

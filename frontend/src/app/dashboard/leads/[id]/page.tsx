@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 export default function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
   const { id } = use(params)
-  
+
   const { data: lead, isLoading: leadLoading } = useLead(id)
   const { data: explanation, isLoading: explLoading } = useLeadExplanation(id)
 
@@ -70,48 +70,48 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
           <CardHeader>
             <CardTitle>AI Intelligence Report</CardTitle>
             <p className="text-sm text-secondary">
-               Calculated using {explanation?.intent_label || "Machine Learning"} signals and intent data.
+              Calculated using {explanation?.intent_label || "Machine Learning"} signals and intent data.
             </p>
           </CardHeader>
           <CardContent className="space-y-8">
-             <div className="mt-4 flex flex-col items-center justify-center p-6 bg-bg/50 rounded-2xl border border-border">
-                <div className="text-5xl font-extrabold text-primary mb-2">
-                   {Math.round((explanation?.score || lead.score?.final_score || 0) * 100)}
-                </div>
-                <div className="text-sm font-medium text-secondary uppercase tracking-widest">
-                   Propensity Score
-                </div>
-             </div>
+            <div className="mt-4 flex flex-col items-center justify-center p-6 bg-bg/50 rounded-2xl border border-border">
+              <div className="text-5xl font-extrabold text-primary mb-2">
+                {Math.round((explanation?.score || lead.score?.final_score || 0) * 100)}
+              </div>
+              <div className="text-sm font-medium text-secondary uppercase tracking-widest">
+                Propensity Score
+              </div>
+            </div>
 
-             <div className="space-y-4">
-                <div className="flex justify-between items-center text-sm">
-                   <span className="text-secondary">Value Alignment</span>
-                   <span className="text-primary font-medium">{Math.round((explanation?.value_score || 0) * 100)}%</span>
-                </div>
-                <div className="h-2 bg-border rounded-full overflow-hidden">
-                   <div 
-                      className="bg-accent h-full transition-all duration-1000" 
-                      style={{ width: `${(explanation?.value_score || 0) * 100}%` }}
-                   />
-                </div>
-                
-                <div className="flex justify-between items-center text-sm">
-                   <span className="text-secondary">Data Confidence</span>
-                   <span className="text-primary font-medium">{Math.round((explanation?.confidence_score || 0) * 100)}%</span>
-                </div>
-                <div className="h-2 bg-border rounded-full overflow-hidden">
-                   <div 
-                      className="bg-primary h-full transition-all duration-1000" 
-                      style={{ width: `${(explanation?.confidence_score || 0) * 100}%` }}
-                   />
-                </div>
-             </div>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-secondary">Value Alignment</span>
+                <span className="text-primary font-medium">{Math.round((explanation?.value_score || 0) * 100)}%</span>
+              </div>
+              <div className="h-2 bg-border rounded-full overflow-hidden">
+                <div
+                  className="bg-accent h-full transition-all duration-1000"
+                  style={{ width: `${(explanation?.value_score || 0) * 100}%` }}
+                />
+              </div>
+
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-secondary">Data Confidence</span>
+                <span className="text-primary font-medium">{Math.round((explanation?.confidence_score || 0) * 100)}%</span>
+              </div>
+              <div className="h-2 bg-border rounded-full overflow-hidden">
+                <div
+                  className="bg-primary h-full transition-all duration-1000"
+                  style={{ width: `${(explanation?.confidence_score || 0) * 100}%` }}
+                />
+              </div>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-             <CardTitle>Decision Logic</CardTitle>
+            <CardTitle>Decision Logic</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {explanation?.top_reasons.map((reason, i) => (
@@ -120,57 +120,57 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
                   {i === 0 ? <Target className="text-accent size-5" /> : (i === 1 ? <Briefcase className="text-accent size-5" /> : <Cpu className="text-accent size-5" />)}
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-primary">Intelligence Signal #{i+1}</h4>
+                  <h4 className="text-sm font-semibold text-primary">Intelligence Signal #{i + 1}</h4>
                   <p className="text-xs text-secondary mt-1">{reason}</p>
                 </div>
               </div>
             ))}
-            
+
             {(!explanation || explanation.top_reasons.length === 0) && (
-               <div className="flex flex-col items-center justify-center h-full text-center p-8 space-y-2">
-                  <ShieldCheck className="size-12 text-border" />
-                  <p className="text-sm text-secondary">Analyzing behavioral signals and metadata...</p>
-               </div>
+              <div className="flex flex-col items-center justify-center h-full text-center p-8 space-y-2">
+                <ShieldCheck className="size-12 text-border" />
+                <p className="text-sm text-secondary">Analyzing behavioral signals and metadata...</p>
+              </div>
             )}
           </CardContent>
         </Card>
-        
+
         <Card className="col-span-full">
-           <CardHeader>
-              <CardTitle>AI Summary & Recommendation</CardTitle>
-           </CardHeader>
-           <CardContent>
-              <div className="p-4 bg-bg border border-border rounded-xl">
-                 <p className="text-sm leading-relaxed text-secondary italic">
-                    "{explanation?.summary || "Lead is currently under analysis by the Growth OS engine. Recommend monitoring for intent signals before initiating outreach."}"
-                 </p>
-              </div>
-              
-              {explanation && (
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                   <div className="space-y-2">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-primary">Value Drivers</h4>
-                      <ul className="space-y-1">
-                         {explanation.value_factors.map((f, i) => (
-                           <li key={i} className="text-sm text-secondary flex items-center gap-2">
-                              <Zap className="size-3 text-accent" /> {f}
-                           </li>
-                         ))}
-                      </ul>
-                   </div>
-                   <div className="space-y-2">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-primary">Confidence Factors</h4>
-                      <ul className="space-y-1">
-                         {explanation.confidence_factors.map((f, i) => (
-                           <li key={i} className="text-sm text-secondary flex items-center gap-2">
-                              <ShieldCheck className="size-3 text-primary" /> {f}
-                           </li>
-                         ))}
-                      </ul>
-                   </div>
+          <CardHeader>
+            <CardTitle>AI Summary & Recommendation</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="p-4 bg-bg border border-border rounded-xl">
+              <p className="text-sm leading-relaxed text-secondary italic">
+                "{explanation?.summary || "Lead is currently under analysis by the Growth OS engine. Recommend monitoring for intent signals before initiating outreach."}"
+              </p>
+            </div>
+
+            {explanation && (
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-primary">Value Drivers</h4>
+                  <ul className="space-y-1">
+                    {explanation.value_factors.map((f, i) => (
+                      <li key={i} className="text-sm text-secondary flex items-center gap-2">
+                        <Zap className="size-3 text-accent" /> {f}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              )}
-           </CardContent>
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-primary">Confidence Factors</h4>
+                  <ul className="space-y-1">
+                    {explanation.confidence_factors.map((f, i) => (
+                      <li key={i} className="text-sm text-secondary flex items-center gap-2">
+                        <ShieldCheck className="size-3 text-primary" /> {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+          </CardContent>
         </Card>
       </div>
     </div>
