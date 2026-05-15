@@ -1,0 +1,53 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Docker ignore — keeps the build context lean and secrets out of images
+# ──────────────────────────────────────────────────────────────────────────────
+
+# Secrets & environment files
+.env
+.env.*
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# IDE configs
+.vscode
+.idea
+*.swp
+*.swo
+
+# Python cache & compiled files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Packaging artifacts
+*.egg-info/
+dist/
+build/
+
+# Test & debugging artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+archive/
+
+# Logs
+*.log
+logs/
+
+# Docs (not needed at runtime)
+README.md
+*.md
+
+# Docker compose (runtime-only tooling)
+docker-compose.yml
+docker-compose*.yml
