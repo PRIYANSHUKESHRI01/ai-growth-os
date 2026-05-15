@@ -47,6 +47,8 @@ export interface LeadExplanation {
   value_factors: string[];
   confidence_factors: string[];
   summary: string;
+  value_score?: number;
+  confidence_score?: number;
 }
 
 export interface DiscoveryJob {
